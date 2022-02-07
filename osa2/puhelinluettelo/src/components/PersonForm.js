@@ -13,7 +13,18 @@ const PersonForm = (props) => {
     }
     
     if(props.persons.find(element => element.name === props.newName)) {
-      window.alert(`${props.newName} is already added to phonebook`)
+      window.confirm(`${props.newName} is already added to phonebook. Would you like to change the number?`)
+      personsService
+      .update(id)
+      .then(returnedPerson => {
+        props.setNotificationMessage(
+          `Changed '${props.name} number'`
+        )
+        setTimeout(() => {
+          props.setNotificationMessage(null)
+        }, 3000)
+        props.setPersons(props.persons)
+      })
       props.setNewName('')
       props.setNewNumber('')
     }
@@ -32,7 +43,13 @@ const PersonForm = (props) => {
             props.setNotificationMessage(null)
           }, 3000)
         })
-          
+        .catch(error => {
+          props.setNotificationMessage(`'${error.response.data.error}'`)
+          setTimeout(() => {
+            props.setNotificationMessage(null)
+          }, 3000)
+          console.log(error.response.data)
+        })
     }
   }
 
