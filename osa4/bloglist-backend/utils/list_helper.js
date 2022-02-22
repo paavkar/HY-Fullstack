@@ -1,5 +1,6 @@
 const lodash = require('lodash')
 
+// eslint-disable-next-line no-unused-vars
 const dummy = (blogs) => {
   return 1
 }
@@ -13,12 +14,11 @@ const totalLikes = (blogs) => {
 
 
 const favoriteBlog = (blogs) => {
-  const favorite = blogs[0]
   const reducer = (favorite, blog) => {
     if (blog.likes > favorite.likes) return blog
     return favorite
   }
-  return blogs.reduce(reducer, favorite)
+  return blogs.reduce(reducer, blogs[0])
 }
 
 
