@@ -1,8 +1,10 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBhYXZrYXIiLCJpZCI6IjYyMTYxOWRlMGY4MjhjYmZmNjc4YWU5YSIsImlhdCI6MTY0NTYxNjIzNSwiZXhwIjoxNjQ1NjE5ODM1fQ.ufHg38qtgYu07hjychbaYOyqvAFiWnD5tYC50Necc4M
 
 {
-  "title": "Test Blog 9", 
-  "author": "Paavo Karppinen",
-  "url": "Another blog about things"
+  "title": "", 
+  "author": "",
+  "url": "",
+  "userId": ""
 }
