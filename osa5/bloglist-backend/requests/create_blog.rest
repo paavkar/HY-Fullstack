@@ -1,0 +1,10 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBhYXZrYXIiLCJpZCI6IjYyMTYxOWRlMGY4MjhjYmZmNjc4YWU5YSIsImlhdCI6MTY0NTczMTEwNiwiZXhwIjoxNjQ1NzM0NzA2fQ.geC-Kts1o4rjxaKQ4e10U64t15zIvBFOHPymQFSnYwc
+
+{
+  "title": "Testing adding a blog with id", 
+  "author": "Paavo Karppinen",
+  "url": "github.com/paavkar",
+  "userId": "621619de0f828cbff678ae9a"
+}
