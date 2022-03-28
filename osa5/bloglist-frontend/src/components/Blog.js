@@ -6,7 +6,7 @@ const Blog = ({ blog, user, addLike, removeBlog }) => {
 
   const hideWhenVisible = { display: visible ? 'none' : '' }
   const showWhenVisible = { display: visible ? '' : 'none' }
-  const showIfTrue = { display: user.id === blog.user ? 'none' : '' }
+  const showIfTrue = { display: user.username === blog.user.username ? '' : 'none' }
 
   const blogStyle = {
     paddingTop: 10,
@@ -28,9 +28,9 @@ const Blog = ({ blog, user, addLike, removeBlog }) => {
         {blog.title} <button onClick={() => setVisible(false)}>
             hide
         </button>
-        <p>{blog.url}</p>
+        <p>{blog.url} </p>
         likes: {blog.likes} <button onClick={() => addLike(blog.id)}>like</button>
-        <p>{blog.author}</p>
+        <p>{blog.author} </p>
         <div style={showIfTrue}>
           <button onClick={() => removeBlog(blog.id)}>remove</button>
         </div>
