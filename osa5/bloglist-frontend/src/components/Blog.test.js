@@ -45,11 +45,11 @@ describe('testing the blog rendering', () => {
     const mockHandler = jest.fn()
 
     render(
-      <Blog blog={blog} user={user} like={mockHandler} />
+      <Blog blog={blog} user={user} addLike={mockHandler} />
     )
 
     const button = screen.getByText('like')
     userEvent.dblClick(button)
-    expect(mockHandler).toHaveBeenCalledTimes(2)
+    expect(mockHandler.mock.calls).toHaveLength(2)
   })
 })
