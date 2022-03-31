@@ -18,8 +18,8 @@ const Blog = ({ blog, user, addLike, removeBlog }) => {
 
 
   return (
-    <div style={blogStyle} className="partialInfo">
-      <div style={hideWhenVisible}>
+    <div style={blogStyle}>
+      <div style={hideWhenVisible} className="partialInfo">
         {blog.title} {blog.author} <button onClick={() => setVisible(true)}>
             view
         </button>

@@ -20,7 +20,7 @@ describe('testing the blog rendering', () => {
   }
 
 
-  test('renders content', () => {
+  test('initially shows only title and author', () => {
 
     const { container } = render(<Blog blog={blog} user={user} />)
 
@@ -28,6 +28,8 @@ describe('testing the blog rendering', () => {
 
     expect(div).toHaveTextContent('Testing the blog rendering with react-testing library')
     expect(div).toHaveTextContent('Paavo Karppinen')
+    expect(div).not.toHaveTextContent('https://github.com/paavkar')
+    expect(div).not.toHaveTextContent(5)
   })
 
   test('clicking the button shows full info', () => {
@@ -38,6 +40,10 @@ describe('testing the blog rendering', () => {
     userEvent.click(button)
 
     expect(div).not.toHaveStyle('display: none')
+    expect(div).toHaveTextContent('Testing the blog rendering with react-testing library')
+    expect(div).toHaveTextContent('Paavo Karppinen')
+    expect(div).toHaveTextContent('https://github.com/paavkar')
+    expect(div).toHaveTextContent(5)
   })
 
   test('clicking the button calls event handler twice', async () => {
