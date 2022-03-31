@@ -14,9 +14,9 @@ const PersonForm = (props) => {
     
     if(props.persons.find(element => element.name === props.newName)) {
       const person = props.persons.find(element => element.name === props.newName)
-      window.confirm(`${props.newName} is already added to phonebook. Would you like to change the number?`)
-      person.number = props.newNumber
-      personsService
+      if (window.confirm(`${props.newName} is already added to phonebook. Would you like to change the number?`)) {
+        person.number = props.newNumber
+        personsService
         .update(person.id, person)
         .then(returnedPerson => {
           props.setNotificationMessage(
@@ -27,8 +27,10 @@ const PersonForm = (props) => {
           }, 3000)
           props.setPersons(props.persons)
         })
-      props.setNewName('')
-      props.setNewNumber('')
+        props.setNewName('')
+        props.setNewNumber('')
+      }
+      
     }
     else {
       personsService

@@ -13,8 +13,8 @@ const Persons = ({persons, setPersons, setNotificationMessage }) => {
 
  
   const deletePerson = (id, name) => {
-    window.confirm(`Delete ${name} ?`)
-    personsService
+    if (window.confirm(`Delete ${name} ?`)) {
+      personsService
       .remove(id)
       .then(returnedPerson => {
         
@@ -27,6 +27,7 @@ const Persons = ({persons, setPersons, setNotificationMessage }) => {
         }, 3000)
         setPersons(persons)
       })
+    }
   }
 
   const personsToShow = showAll
