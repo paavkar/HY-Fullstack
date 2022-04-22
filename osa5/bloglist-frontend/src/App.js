@@ -89,13 +89,14 @@ const App = () => {
 
   const removeBlog = async (id) => {
     const blog = blogs.find(b => b.id === id)
-    window.confirm(`Delete ${blog.title} ?`)
-    await blogService.remove(id)
-    setNotificationMessage(`Removed ${blog.title}`)
-    setTimeout(() => {
-      setNotificationMessage(null)
-    }, 3000)
-    setBlogs(blogs)
+    if(window.confirm(`Delete ${blog.title} ?`)) {
+      await blogService.remove(id)
+      setNotificationMessage(`Removed ${blog.title}`)
+      setTimeout(() => {
+        setNotificationMessage(null)
+      }, 3000)
+      setBlogs(blogs)
+    }
   }
 
   /*
