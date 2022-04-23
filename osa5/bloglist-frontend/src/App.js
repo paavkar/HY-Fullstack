@@ -3,15 +3,13 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
-import Error from './components/Error'
 import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [notificationMessage, setNotificationMessage] = useState(null)
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [notification, setNotification] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -33,20 +31,32 @@ const App = () => {
 
   const blogFormRef = useRef()
 
+  const notify = (message, type='info') => {
+    setNotification({ message, type })
+    setTimeout(() => {
+      setNotification(null)
+    }, 3000)
+  }
 
+  /*
+  * Added page reloading after the notification timer is out, so that button to remove blog appears
+  */
   const addBlog = (blogObject) => {
     blogFormRef.current.toggleVisibility()
     blogService
       .create(blogObject)
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
-        setNotificationMessage(
+        notify(
           `A new blog '${blogObject.title}' by '${blogObject.author}' has been added`
         )
         setTimeout(() => {
-          setNotificationMessage(null)
+          setNotification(null)
         }, 3000)
       })
+    setTimeout(() => {
+      window.location.reload(true)
+    }, 3000)
   }
 
 
@@ -64,9 +74,9 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setErrorMessage('wrong username or password')
+      notify('wrong username or password', 'alert')
       setTimeout(() => {
-        setErrorMessage(null)
+        setNotification(null)
       }, 3000)
     }
   }
@@ -87,16 +97,23 @@ const App = () => {
   }
 
 
+  /*
+  * Added page reloading after the notification timer is out, so that the blog is removed from the screen
+  * as it is from the database
+  */
   const removeBlog = async (id) => {
     const blog = blogs.find(b => b.id === id)
     if(window.confirm(`Delete ${blog.title} ?`)) {
       await blogService.remove(id)
-      setNotificationMessage(`Removed ${blog.title}`)
+      notify(`Removed ${blog.title}`)
       setTimeout(() => {
-        setNotificationMessage(null)
+        setNotification(null)
       }, 3000)
       setBlogs(blogs)
     }
+    setTimeout(() => {
+      window.location.reload(true)
+    }, 3000)
   }
 
   /*
@@ -163,7 +180,7 @@ const App = () => {
     return (
       <div>
         <h2> Log in to application </h2>
-        <Error message={errorMessage} />
+        <Notification notification={notification} />
         <Togglable buttonLabel='login'>
           <LoginForm
             username={username}
@@ -180,8 +197,7 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      <Notification message={notificationMessage} />
-      <Error message={errorMessage} />
+      <Notification notification={notification} />
 
       <div>
         <p>{user.name} logged in

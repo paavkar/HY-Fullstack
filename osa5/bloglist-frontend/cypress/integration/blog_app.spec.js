@@ -17,8 +17,8 @@ describe('Blog app', function() {
   */
   it('Login form is shown', function() {
     cy.contains('login').click()
-    cy.get('#username')
-    cy.get('#password')
+    cy.get('#username').should('be.visible')
+    cy.get('#password').should('be.visible')
   })
 
   describe('Login',function() {
@@ -28,6 +28,7 @@ describe('Blog app', function() {
       cy.get('#password').type('salainen')
       cy.get('#login-button').click()
       cy.login({ username: 'testaaja', password: 'salainen' })
+      cy.get('html').should('contain', 'Testi Testaaja logged in')
     })
 
     it('it fails with wrong credentials', function() {
@@ -36,8 +37,7 @@ describe('Blog app', function() {
       cy.get('#password').type('wrong')
       cy.get('#login-button').click()
 
-      cy.get('.error')
-        .should('contain', 'wrong username or password')
+      cy.contains('wrong username or password')
         .and('have.css', 'color', 'rgb(255, 0, 0)')
         .and('have.css', 'border-style', 'solid')
 
