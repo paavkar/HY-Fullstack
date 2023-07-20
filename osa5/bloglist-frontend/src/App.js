@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import userService from './services/user'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
@@ -21,11 +22,9 @@ const App = () => {
 
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBloglistAppUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
+    const userFromStorage = userService.getUser()
+    if (userFromStorage) {
+      setUser(userFromStorage)
     }
   }, [])
 
@@ -60,32 +59,23 @@ const App = () => {
   }
 
 
-  const handleLogin = async (event) => {
-    event.preventDefault()
-    try {
-      const user = await loginService.login({
-        username, password,
-      })
+  const handleLogin = async (username, password) => {
+    loginService.login({
+      username, password,
+    }).then(user => {
       setUser(user)
-      blogService.setToken(user.token)
-      window.localStorage.setItem(
-        'loggedBloglistAppUser', JSON.stringify(user)
-      )
-      setUsername('')
-      setPassword('')
-    } catch (exception) {
-      notify('wrong username or password', 'alert')
-      setTimeout(() => {
-        setNotification(null)
-      }, 3000)
-    }
+      userService.setUser(user)
+      notify(`${user.name} logged in!`)
+    }).catch(() => {
+      notify('wrong username/password', 'alert')
+    })
   }
 
 
-  const logoutUser = () =>  {
-    localStorage.removeItem('loggedBloglistAppUser')
-    blogService.setToken(false)
+  const logoutUser = () => {
     setUser(null)
+    userService.clearUser()
+    notify('good bye!')
   }
 
 
