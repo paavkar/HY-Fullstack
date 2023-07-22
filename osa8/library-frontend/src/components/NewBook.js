@@ -1,52 +1,54 @@
-import { useState } from 'react'
+import { useState } from "react";
 
-import { CREATE_BOOK, ALL_BOOKS, ALL_AUTHORS } from '../queries'
-import { useMutation } from '@apollo/client'
+import { CREATE_BOOK, ALL_BOOKS, ALL_AUTHORS } from "../queries";
+import { useMutation } from "@apollo/client";
+
+import { updateCache } from "../App";
 
 const NewBook = (props) => {
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [published, setPublished] = useState('')
-  const [genre, setGenre] = useState('')
-  const [genres, setGenres] = useState([])
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [published, setPublished] = useState("");
+  const [genre, setGenre] = useState("");
+  const [genres, setGenres] = useState([]);
 
-  const [ createBook ] = useMutation(CREATE_BOOK, {
+  const [createBook] = useMutation(CREATE_BOOK, {
     onError: (error) => {
-      const errors = error.graphQLErrors[0].extensions.error.errors
-      const messages = Object.values(errors).map(e => e.message).join('\n')
-      props.setError(messages)
+      const errors = error.graphQLErrors[0].extensions.error.errors;
+      const messages = Object.values(errors)
+        .map((e) => e.message)
+        .join("\n");
+      props.setError(messages);
     },
     update: (cache, response) => {
-      cache.updateQuery({ query: ALL_BOOKS }, ({ allBooks }) => {
-        return {
-          allBooks: allBooks.concat(response.data.addBook),
-        }
-      })
+      updateCache(cache, { query: ALL_BOOKS }, response.data.addBook);
     },
-    refetchQueries:[ ALL_AUTHORS ]
-  })
+    refetchQueries: [ALL_AUTHORS],
+  });
 
   if (!props.show) {
-    return null
+    return null;
   }
 
   const submit = async (event) => {
-    event.preventDefault()
+    event.preventDefault();
 
     //console.log('add book...')
-    createBook({ variables: { title, author, published: parseInt(published), genres }})
+    createBook({
+      variables: { title, author, published: parseInt(published), genres },
+    });
 
-    setTitle('')
-    setPublished('')
-    setAuthor('')
-    setGenres([])
-    setGenre('')
-  }
+    setTitle("");
+    setPublished("");
+    setAuthor("");
+    setGenres([]);
+    setGenre("");
+  };
 
   const addGenre = () => {
-    setGenres(genres.concat(genre))
-    setGenre('')
-  }
+    setGenres(genres.concat(genre));
+    setGenre("");
+  };
 
   return (
     <div>
@@ -82,11 +84,11 @@ const NewBook = (props) => {
             add genre
           </button>
         </div>
-        <div>genres: {genres.join(' ')}</div>
+        <div>genres: {genres.join(" ")}</div>
         <button type="submit">create book</button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default NewBook
+export default NewBook;
