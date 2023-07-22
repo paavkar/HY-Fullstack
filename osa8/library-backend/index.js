@@ -110,7 +110,6 @@ let books = [
     title: "The Demon ",
     published: 1872,
     author: "Fyodor Dostoevsky",
-    id: "afa5de04-344d-11e9-a414-719c6709cf3e",
     genres: ["classic", "revolution"],
   },
 ];
@@ -174,7 +173,7 @@ const typeDefs = `
     login(
       username: String!
       password: String!
-    ): Token 
+    ): Token
   }
 `;
 
@@ -229,8 +228,6 @@ const resolvers = {
           },
         });
       }
-
-      const book = new Book({ ...args });
       const existingAuthor = await Author.findOne({ name: args.author });
       
       if (args.title.length < 5) {
@@ -268,11 +265,11 @@ const resolvers = {
       if (!existingAuthor) {
         const author = new Author({ name: args.author });
         author.born = null;
-        book.author = author._id;
         await author.save();
+        const book = new Book({ ...args, author: author._id });
         return await book.save();
       } else {
-        book.author = existingAuthor._id;
+        const book = new Book({ ...args, author: existingAuthor._id });
         return await book.save();
       }
     },
