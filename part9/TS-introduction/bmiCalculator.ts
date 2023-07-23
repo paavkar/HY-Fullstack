@@ -19,7 +19,7 @@ const calculateBmi = (height: number, weight: number): string => {
       return "Obsese"
   
     default:
-      break;
+      return ""
   }
 }
 
@@ -47,3 +47,5 @@ try {
   }
   console.log(errorMessage);
 }
+
+export default calculateBmi
