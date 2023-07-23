@@ -43,9 +43,9 @@ const resolvers = {
     },
   },
   Author: {
-    bookCount: async (root) => {
+    bookCount: async (root, _args, context) => {
       const author = await Author.findOne({ name: root.name });
-      const foundBooks = await Book.find({ author: author._id });
+      const foundBooks = await context.loaders.books.load(author._id);
       return foundBooks.length;
     },
   },
