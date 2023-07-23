@@ -1,29 +1,29 @@
 interface Exercisevalues {
   target: number;
-  exerciseHours: Array<number>
+  exerciseHours: Array<number>;
 }
 
-export const parseArguments = (args: string[]): Exercisevalues => {
-  if (args.length < 4) throw new Error('Not enough arguments');
-  const exerciseHours: Array<number> = []
-  for (var i = 3; i < args.length; i++) {
-    exerciseHours.push(Number(args[i]))
+const parseArguments = (args: string[]): Exercisevalues => {
+  if (args.length < 4) throw new Error("Not enough arguments");
+  const exerciseHours: Array<number> = [];
+  for (let i = 3; i < args.length; i++) {
+    exerciseHours.push(Number(args[i]));
   }
 
   if (!isNaN(Number(args[2])) && !isNaN(Number(args[3]))) {
     return {
       target: Number(args[2]),
-      exerciseHours: exerciseHours
-    }
+      exerciseHours: exerciseHours,
+    };
   } else {
-    throw new Error('Provided values were not numbers!');
+    throw new Error("Provided values were not numbers!");
   }
-}
+};
 
 interface Result {
   periodLength: number;
   trainingDays: number;
-  success: Boolean;
+  success: boolean;
   rating: number;
   ratingDescription: string;
   target: number;
@@ -39,7 +39,7 @@ const calculateExercises = (
   let trainDays: number = 0;
   let trainingTime: number = 0;
   let rating: number = 0;
-  for (var i = 0; i < exerciseHours.length; i++) {
+  for (let i = 0; i < exerciseHours.length; i++) {
     if (exerciseHours[i] > 0) {
       trainDays += 1;
       trainingTime += exerciseHours[i];
@@ -89,15 +89,15 @@ const calculateExercises = (
   };
 };
 
-
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
 try {
   const { target, exerciseHours } = parseArguments(process.argv);
   console.log(calculateExercises(exerciseHours, target));
 } catch (error: unknown) {
-  let errorMessage = 'Something bad happened.'
+  let errorMessage = "Something bad happened.";
   if (error instanceof Error) {
-    errorMessage += ' Error: ' + error.message;
+    errorMessage += " Error: " + error.message;
   }
   console.log(errorMessage);
 }
+
+export default calculateExercises;
