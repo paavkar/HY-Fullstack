@@ -1,0 +1,6 @@
+[submodule "part10-rate-repository-app"]
+	path = part10-rate-repository-app
+	url = https://github.com/paavkar/part10-rate-repository-app
+[submodule "part10-react-native"]
+	path = part10-react-native
+	url = https://github.com/paavkar/rate-repository-app
