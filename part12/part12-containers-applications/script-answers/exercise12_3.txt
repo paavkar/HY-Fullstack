@@ -1,0 +1,3 @@
+emacs
+CTRL-X F usr/src/app/index.js (to find the file while in emacs)
+CTRL-X S		      (to save the file while in emacs)
