@@ -2,16 +2,17 @@ const router = require('express').Router()
 
 const Blog = require('../models/blog')
 //const User = require('../models/user')
+const userExtractor = require('../utils/middleware').userExtractor
 
 router.get('/', async (request, response) => {
-  const notes = await Blog
+  const blogs = await Blog
     .find({})
     .find({}).populate('user', { username: 1, name: 1 })
 
-  response.json(notes)
+  response.json(blogs)
 })
 
-router.post('/', async (request, response) => {
+router.post('/', userExtractor, async (request, response) => {
   if (!request.user) {
     return response.status(401).json({ error: 'token missing or invalid' })
   }
@@ -31,7 +32,7 @@ router.post('/', async (request, response) => {
   response.status(201).json(blogToReturn)
 })
 
-router.delete('/:id', async (request, response) => {
+router.delete('/:id', userExtractor, async (request, response) => {
   const blogToDelete = await Blog.findById(request.params.id)
   if (!blogToDelete ) {
     return response.status(204).end()
